@@ -7,6 +7,75 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+// instantiate Flux dispatcher
+
+var FooterActions = (function () {
+    function FooterActions() {
+        _classCallCheck(this, FooterActions);
+
+        // straight-through dispatch - `this.dispatch(payload)` to a store
+        this.generateActions(
+        // update store, re-render component with new data
+        'getTopCharactersSuccess',
+        // display error notification
+        'getTopCharactersFail');
+    }
+
+    _createClass(FooterActions, [{
+        key: 'getTopCharacters',
+        value: function getTopCharacters() {
+            var _this = this;
+
+            $.ajax({ url: '/api/characters/top' }).done(function (data) {
+                // when getTopCharactersSuccess(payload) is fired =>
+                // dispatcher notifies all registered subscribers (store callbacks)
+                _this.actions.getTopCharactersSuccess(data);
+            }).fail(function (jqXhr) {
+                _this.actions.getTopCharactersFail(jqXhr);
+            });
+        }
+    }]);
+
+    return FooterActions;
+})();
+
+exports['default'] = _alt2['default'].createActions(FooterActions);
+module.exports = exports['default'];
+
+},{"../alt":2}],2:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _alt = require('alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+// singleton
+exports['default'] = new _alt2['default']();
+module.exports = exports['default'];
+
+},{"alt":"alt"}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -20,6 +89,10 @@ var _react = require('react');
 var _react2 = _interopRequireDefault(_react);
 
 var _reactRouter = require('react-router');
+
+var _Footer = require('./Footer');
+
+var _Footer2 = _interopRequireDefault(_Footer);
 
 var App = (function (_React$Component) {
     _inherits(App, _React$Component);
@@ -42,7 +115,7 @@ var App = (function (_React$Component) {
                     'App!'
                 ),
                 _react2['default'].createElement(_reactRouter.RouteHandler, null),
-                ' '
+                _react2['default'].createElement(_Footer2['default'], null)
             );
         }
     }]);
@@ -52,9 +125,148 @@ var App = (function (_React$Component) {
 
 exports['default'] = App;
 module.exports = exports['default'];
-/* <div ng-view></div> - insert template of current route here*/
 
-},{"react":"react","react-router":"react-router"}],2:[function(require,module,exports){
+},{"./Footer":4,"react":"react","react-router":"react-router"}],4:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+var _storesFooterStore = require('../stores/FooterStore');
+
+var _storesFooterStore2 = _interopRequireDefault(_storesFooterStore);
+
+var _actionsFooterActions = require('../actions/FooterActions');
+
+var _actionsFooterActions2 = _interopRequireDefault(_actionsFooterActions);
+
+// Fetches and displays the Top 5 characters.
+
+var Footer = (function (_React$Component) {
+  _inherits(Footer, _React$Component);
+
+  function Footer(props) {
+    _classCallCheck(this, Footer);
+
+    _get(Object.getPrototypeOf(Footer.prototype), 'constructor', this).call(this, props);
+    // set initial state
+    this.state = _storesFooterStore2['default'].getState();
+    // need to bind this for any internal methods
+    this.onChange = this.onChange.bind(this);
+  }
+
+  // invoked once on initial render, only on client, has DOM
+  // send AJAX requests, integrate with other JS
+
+  _createClass(Footer, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      // calls back with state data
+      _storesFooterStore2['default'].listen(this.onChange);
+      _actionsFooterActions2['default'].getTopCharacters();
+    }
+
+    // Perform any necessary cleanup in this method, such as invalidating timers or unregistering listeners
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      _storesFooterStore2['default'].unlisten(this.onChange);
+    }
+  }, {
+    key: 'onChange',
+    value: function onChange(state) {
+      this.setState(state);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      // li item with links - dynamic children required to have keys
+      var leaderboardCharacters = undefined;
+      if (this.state.characters.length) {
+        leaderboardCharacters = this.state.characters.map(function (character) {
+          return _react2['default'].createElement(
+            'li',
+            { key: character.characterId },
+            _react2['default'].createElement(
+              _reactRouter.Link,
+              { to: '/characters/' + character.characterId },
+              _react2['default'].createElement('img', { className: 'thumb-md', src: 'http://image.eveonline.com/Character/' + character.characterId + '_128.jpg' })
+            )
+          );
+        });
+      }
+      console.log("render", this.state);
+      return _react2['default'].createElement(
+        'footer',
+        null,
+        _react2['default'].createElement(
+          'div',
+          { className: 'container' },
+          _react2['default'].createElement(
+            'div',
+            { className: 'row' },
+            _react2['default'].createElement(
+              'div',
+              { className: 'col-sm-5' },
+              _react2['default'].createElement(
+                'h3',
+                { className: 'lead' },
+                _react2['default'].createElement(
+                  'strong',
+                  null,
+                  'Footer'
+                )
+              )
+            ),
+            _react2['default'].createElement(
+              'div',
+              { className: 'col-sm-7 hidden-xs' },
+              _react2['default'].createElement(
+                'h3',
+                { className: 'lead' },
+                _react2['default'].createElement(
+                  'strong',
+                  null,
+                  'Leaderboard'
+                ),
+                ' Top 5 Characters'
+              ),
+              _react2['default'].createElement(
+                'ul',
+                { className: 'list-inline' },
+                leaderboardCharacters
+              )
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return Footer;
+})(_react2['default'].Component);
+
+exports['default'] = Footer;
+module.exports = exports['default'];
+
+},{"../actions/FooterActions":1,"../stores/FooterStore":8,"react":"react","react-router":"react-router"}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -101,7 +313,7 @@ var Home = (function (_React$Component) {
 exports["default"] = Home;
 module.exports = exports["default"];
 
-},{"react":"react"}],3:[function(require,module,exports){
+},{"react":"react"}],6:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -125,7 +337,7 @@ _reactRouter2['default'].run(_routes2['default'], _reactRouter2['default'].Histo
     _react2['default'].render(_react2['default'].createElement(Handler, null), document.getElementById('app'));
 });
 
-},{"./routes":4,"react":"react","react-router":"react-router"}],4:[function(require,module,exports){
+},{"./routes":7,"react":"react","react-router":"react-router"}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -155,4 +367,59 @@ exports['default'] = _react2['default'].createElement(
 );
 module.exports = exports['default'];
 
-},{"./components/App":1,"./components/Home":2,"react":"react","react-router":"react-router"}]},{},[3]);
+},{"./components/App":3,"./components/Home":5,"react":"react","react-router":"react-router"}],8:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+var _actionsFooterActions = require('../actions/FooterActions');
+
+var _actionsFooterActions2 = _interopRequireDefault(_actionsFooterActions);
+
+var FooterStore = (function () {
+    function FooterStore() {
+        _classCallCheck(this, FooterStore);
+
+        console.log("init footerStore");
+        // register callbacks with dispatcher
+        // bind all the actions inside FooterActions
+        // alternative - this.bindListeners({ callback: action })
+        this.bindActions(_actionsFooterActions2['default']);
+
+        // initial state
+        // all instance variables will become state
+        this.characters = [];
+    }
+
+    _createClass(FooterStore, [{
+        key: 'onGetTopCharactersSuccess',
+        value: function onGetTopCharactersSuccess(data) {
+            this.characters = data.slice(0, 5);
+        }
+    }, {
+        key: 'onGetTopCharactersFail',
+        value: function onGetTopCharactersFail(jqXhr) {
+            // Handle multiple response formats, fallback to HTTP status code number.
+            toastr.error(jqXhr.responseJSON && jqXhr.responseJSON.message || jqXhr.responseText || jqXhr.statusText);
+        }
+    }]);
+
+    return FooterStore;
+})();
+
+exports['default'] = _alt2['default'].createStore(FooterStore);
+module.exports = exports['default'];
+
+},{"../actions/FooterActions":1,"../alt":2}]},{},[6]);

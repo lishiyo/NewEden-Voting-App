@@ -32,20 +32,26 @@ class Footer extends React.Component {
 
     render() {
         // li item with links - dynamic children required to have keys
-        let leaderboardCharacters = this.state.characters.map((character) => {
-          return (
-            <li key={character.characterId}>
-              <Link to={'/characters/' + character.characterId}>
-                <img className='thumb-md' src={'http://image.eveonline.com/Character/' + character.characterId + '_128.jpg'} />
-              </Link>
-            </li>
-          )
-        });
-
+        let leaderboardCharacters;
+        if (this.state.characters.length) {
+            leaderboardCharacters = this.state.characters.map((character) => {
+              return (
+                <li key={character.characterId}>
+                  <Link to={'/characters/' + character.characterId}>
+                    <img className='thumb-md' src={'http://image.eveonline.com/Character/' + character.characterId + '_128.jpg'} />
+                  </Link>
+                </li>
+              )
+            });
+        }
+        console.log("render", this.state);
         return (
           <footer>
             <div className='container'>
               <div className='row'>
+                <div className='col-sm-5'>
+                    <h3 className='lead'><strong>Footer</strong></h3>
+                </div>
                 <div className='col-sm-7 hidden-xs'>
                   <h3 className='lead'><strong>Leaderboard</strong> Top 5 Characters</h3>
                   <ul className='list-inline'>

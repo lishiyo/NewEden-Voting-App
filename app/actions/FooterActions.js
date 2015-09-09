@@ -12,7 +12,7 @@ class FooterActions {
     }
 
     getTopCharacters() {
-        $.ajax({ url: '/api/character/top' })
+        $.ajax({ url: '/api/characters/top' })
          .done((data) => {
             // when getTopCharactersSuccess(payload) is fired => 
             // dispatcher notifies all registered subscribers (store callbacks)
@@ -20,7 +20,7 @@ class FooterActions {
          })
          .fail((jqXhr) => {
             this.actions.getTopCharactersFail(jqXhr);
-         })
+         });
     }
 }
 

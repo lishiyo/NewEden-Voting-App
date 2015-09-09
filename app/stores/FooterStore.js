@@ -3,6 +3,7 @@ import FooterActions from '../actions/FooterActions';
 
 class FooterStore {
     constructor() {
+        console.log("init footerStore");
         // register callbacks with dispatcher
         // bind all the actions inside FooterActions
         // alternative - this.bindListeners({ callback: action })

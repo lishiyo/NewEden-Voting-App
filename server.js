@@ -1,12 +1,12 @@
-var swig  = require('swig');
-var React = require('react');
-var Router = require('react-router');
-var routes = require('../app/routes');
-
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+
+var swig  = require('swig');
+var React = require('react');
+var Router = require('react-router');
+var routes = require('./app/routes');
 
 var app = express();
 
