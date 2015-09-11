@@ -11,6 +11,7 @@ class FooterActions {
         );
     }
 
+    // view actions - call this from components
     getTopCharacters() {
         $.ajax({ url: '/api/characters/top' })
          .done((data) => {

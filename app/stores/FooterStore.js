@@ -3,9 +3,8 @@ import FooterActions from '../actions/FooterActions';
 
 class FooterStore {
     constructor() {
-        console.log("init footerStore");
-        // register callbacks with dispatcher
-        // bind all the actions inside FooterActions
+        // register callbacks with the Alt dispatcher
+        // bind all the actions inside FooterActions, auto-handling with onActionName
         // alternative - this.bindListeners({ callback: action })
         this.bindActions(FooterActions);
 
@@ -20,7 +19,7 @@ class FooterStore {
 
     onGetTopCharactersFail(jqXhr) {
         // Handle multiple response formats, fallback to HTTP status code number.
-    toastr.error(jqXhr.responseJSON && jqXhr.responseJSON.message || jqXhr.responseText || jqXhr.statusText);
+        toastr.error(jqXhr.responseJSON && jqXhr.responseJSON.message || jqXhr.responseText || jqXhr.statusText);
     }
 }
 
