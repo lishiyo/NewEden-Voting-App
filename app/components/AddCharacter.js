@@ -47,7 +47,6 @@ class AddCharacter extends React.Component {
   }
 
   onChange(state) {
-    console.log("onChange AddCharacter component", this.state);
     this.setState(state);
   }
 

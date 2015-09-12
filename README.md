@@ -2,6 +2,8 @@ http://sahatyalkabov.com/create-a-character-voting-app-using-react-nodejs-mongod
 
 ```
 npm install
+bower install
+mongod
 gulp
 npm run watch
 ```
