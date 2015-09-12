@@ -21,16 +21,24 @@ var AddCharacterActions = (function () {
     function AddCharacterActions() {
         _classCallCheck(this, AddCharacterActions);
 
-        this.generateActions('addCharacter', // [name, gender]
-        'updateName', 'updateGender');
+        this.generateActions('addCharacterSuccess', 'addCharacterFail', 'updateName', 'updateGender', 'invalidName', 'invalidGender');
     }
 
     _createClass(AddCharacterActions, [{
-        key: 'invalidName',
-        value: function invalidName() {}
-    }, {
-        key: 'invalidGender',
-        value: function invalidGender() {}
+        key: 'addCharacter',
+        value: function addCharacter(name, gender) {
+            var _this = this;
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/characters',
+                data: { name: name, gender: name }
+            }).done(function (data) {
+                _this.actions.addCharacterSuccess(data.message);
+            }).fail(function (jqXhr) {
+                _this.actions.addCharacterFail(jqXhr.responseJSON.message);
+            });
+        }
     }]);
 
     return AddCharacterActions;
@@ -224,8 +232,13 @@ var AddCharacter = (function (_React$Component) {
     _classCallCheck(this, AddCharacter);
 
     _get(Object.getPrototypeOf(AddCharacter.prototype), 'constructor', this).call(this, props);
+
+    // set initial state
     this.state = _storesAddCharacterStore2['default'].getState();
+
+    // alias callbacks
     this.onChange = this.onChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   _createClass(AddCharacter, [{
@@ -239,6 +252,7 @@ var AddCharacter = (function (_React$Component) {
       if (!name) {
         _actionsAddCharacterActions2['default'].invalidName();
         // <input type='text' ref='nameTextField' ... />
+        // if invalid, focus on the input field
         this.refs.nameTextField.getDOMNode().focus();
       }
 
@@ -250,11 +264,15 @@ var AddCharacter = (function (_React$Component) {
         _actionsAddCharacterActions2['default'].addCharacter(name, gender);
       }
     }
+
+    // bind listeners
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       _storesAddCharacterStore2['default'].listen(this.onChange);
     }
+
+    // unbind listeners
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
@@ -263,11 +281,13 @@ var AddCharacter = (function (_React$Component) {
   }, {
     key: 'onChange',
     value: function onChange(state) {
+      console.log("onChange AddCharacter component", this.state);
       this.setState(state);
     }
   }, {
     key: 'render',
     value: function render() {
+
       return _react2['default'].createElement(
         'div',
         { className: 'container' },
@@ -290,7 +310,7 @@ var AddCharacter = (function (_React$Component) {
                 { className: 'panel-body' },
                 _react2['default'].createElement(
                   'form',
-                  { onSubmit: this.handleSubmit.bind(this) },
+                  { onSubmit: this.handleSubmit },
                   _react2['default'].createElement(
                     'div',
                     { className: 'form-group ' + this.state.nameValidationState },
@@ -706,7 +726,6 @@ var Navbar = (function (_React$Component) {
   }, {
     key: 'onChange',
     value: function onChange(state) {
-      console.log("onChange navbar", state);
       this.setState(state);
     }
   }, {
@@ -1433,7 +1452,7 @@ var _componentsAddCharacter2 = _interopRequireDefault(_componentsAddCharacter);
 
 exports['default'] = _react2['default'].createElement(
     _reactRouter.Route,
-    { handler: _componentsApp2['default'], path: '/' },
+    { handler: _componentsApp2['default'] },
     _react2['default'].createElement(_reactRouter.DefaultRoute, { name: 'home', handler: _componentsHome2['default'] }),
     _react2['default'].createElement(_reactRouter.Route, { name: 'add', path: 'add', handler: _componentsAddCharacter2['default'] })
 );
@@ -1461,6 +1480,18 @@ var _actionsAddCharacterActions = require('../actions/AddCharacterActions');
 var _actionsAddCharacterActions2 = _interopRequireDefault(_actionsAddCharacterActions);
 
 var AddCharacterStore = (function () {
+    _createClass(AddCharacterStore, null, [{
+        key: 'ERROR_CLASS',
+        get: function get() {
+            return 'has-success';
+        }
+    }, {
+        key: 'SUCCESS_CLASS',
+        get: function get() {
+            return 'has-error';
+        }
+    }]);
+
     function AddCharacterStore() {
         _classCallCheck(this, AddCharacterStore);
 
@@ -1468,26 +1499,51 @@ var AddCharacterStore = (function () {
 
         this.name = '';
         this.gender = '';
-        this.nameValidationState = false;
-        this.genderValidationState = false;
+        this.helpBlock = '';
+        this.nameValidationState = '';
+        this.genderValidationState = '';
         this.helpBlock = '';
     }
 
     _createClass(AddCharacterStore, [{
-        key: 'onAddCharacter',
-        value: function onAddCharacter(payload) {
+        key: 'onAddCharacterSuccess',
+        value: function onAddCharacterSuccess(successMessage) {
             // [ name, gender ]
-            console.log("add character", payload);
+            this.nameValidationState = AddCharacterStore.SUCCESS_CLASS;
+            this.helpBlock = successMessage;
+        }
+    }, {
+        key: 'onAddCharacterFail',
+        value: function onAddCharacterFail(errorMessage) {
+            // if name not in database
+            this.nameValidationState = AddCharacterStore.ERROR_CLASS;
+            this.helpBlock = errorMessage;
         }
     }, {
         key: 'onUpdateName',
-        value: function onUpdateName(payload) {
-            this.name = payload;
+        value: function onUpdateName(event) {
+            // onChange => event to updateName
+            this.name = event.target.value;
+            this.nameValidationState = '';
+            this.helpBlock = '';
         }
     }, {
         key: 'onUpdateGender',
-        value: function onUpdateGender(payload) {
-            this.gender = payload;
+        value: function onUpdateGender(event) {
+            this.gender = event.target.value;
+            this.genderValidationState = '';
+        }
+    }, {
+        key: 'onInvalidName',
+        value: function onInvalidName() {
+            // if name is empty
+            this.nameValidationState = AddCharacterStore.ERROR_CLASS;
+            this.helpBlock = 'Please enter a character name.';
+        }
+    }, {
+        key: 'onInvalidGender',
+        value: function onInvalidGender() {
+            this.genderValidationState = AddCharacterStore.ERROR_CLASS;
         }
     }]);
 

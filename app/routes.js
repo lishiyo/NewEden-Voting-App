@@ -5,7 +5,7 @@ import Home from './components/Home';
 import AddCharacter from './components/AddCharacter';
 
 export default (
-    <Route handler={App} path="/">
+    <Route handler={App}>
         <DefaultRoute name="home" handler={Home} />
         <Route name="add" path="add" handler={AddCharacter} />
     </Route>

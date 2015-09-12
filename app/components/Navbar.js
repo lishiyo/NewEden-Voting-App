@@ -60,7 +60,6 @@ class Navbar extends React.Component {
     }
 
     onChange(state) {
-        console.log("onChange navbar", state);
         this.setState(state);
     }
 
@@ -216,7 +215,7 @@ class Navbar extends React.Component {
                             <li><Link to='/male/amarr/khanid'>Khanid</Link></li>
                           </ul>
                         </li>
-                        </ul> 
+                        </ul>
                     </li>
                     <li><Link to='/add'>Add</Link></li>
                 </ul>

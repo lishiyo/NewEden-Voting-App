@@ -3,16 +3,27 @@ import alt from '../alt'; // instantiate Flux dispatcher
 class AddCharacterActions {
     constructor() {
         this.generateActions(
-            'addCharacter', // [name, gender]
+            'addCharacterSuccess',
+            'addCharacterFail',
             'updateName',
-            'updateGender'
+            'updateGender',
+            'invalidName',
+            'invalidGender'
         );
     }
-    invalidName() {
 
-    }
-    invalidGender() {
-
+    addCharacter(name, gender) {
+        $.ajax({
+            type: 'POST',
+            url: '/api/characters',
+            data: { name: name, gender: name }
+        })
+        .done((data) => {
+            this.actions.addCharacterSuccess(data.message);
+        })
+        .fail((jqXhr) => {
+            this.actions.addCharacterFail(jqXhr.responseJSON.message);
+        });
     }
 }
 

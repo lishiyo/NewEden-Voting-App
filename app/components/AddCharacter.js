@@ -5,8 +5,13 @@ import AddCharacterActions from '../actions/AddCharacterActions';
 class AddCharacter extends React.Component {
   constructor(props) {
     super(props);
+
+    // set initial state
     this.state = AddCharacterStore.getState();
+
+    // alias callbacks
     this.onChange = this.onChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit(event) {
@@ -18,6 +23,7 @@ class AddCharacter extends React.Component {
     if (!name) {
       AddCharacterActions.invalidName();
       // <input type='text' ref='nameTextField' ... />
+      // if invalid, focus on the input field
       this.refs.nameTextField.getDOMNode().focus();
     }
 
@@ -30,19 +36,23 @@ class AddCharacter extends React.Component {
     }
   }
 
+  // bind listeners
   componentDidMount() {
     AddCharacterStore.listen(this.onChange);
   }
 
+  // unbind listeners
   componentWillUnmount() {
     AddCharacterStore.unlisten(this.onChange);
   }
 
   onChange(state) {
+    console.log("onChange AddCharacter component", this.state);
     this.setState(state);
   }
 
   render() {
+
     return (
       <div className='container'>
         <div className='row flipInX animated'>
@@ -50,7 +60,7 @@ class AddCharacter extends React.Component {
             <div className='panel panel-default'>
               <div className='panel-heading'>Add Character</div>
               <div className='panel-body'>
-                <form onSubmit={this.handleSubmit.bind(this)}>
+                <form onSubmit={this.handleSubmit}>
                   <div className={'form-group ' + this.state.nameValidationState}>
                     <label className='control-label'>Character Name</label>
                     <input type='text' className='form-control' ref='nameTextField' value={this.state.name}

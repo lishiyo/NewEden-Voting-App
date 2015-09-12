@@ -6,9 +6,10 @@
   },
   "env": {
     "browser": true,
-    "node": true
+    "node": true,
   },
   "rules": {
+    "strict": 0,
     "quotes": [1, "single"],
     "strict": [1, "never"],
     "react/jsx-uses-react": 1,
