@@ -37,9 +37,9 @@ class NavbarActions {
             url: '/api/characters/search',
             data: { name: payload.searchQuery }
         })
-        .done((data) => {
+        .done((data) => { // { count, count }
             assign(payload, data);
-            this.actions.findCharacterSuccess(payload);
+            this.actions.findCharacterSuccess(data.count);
         })
         .fail(() => {
             this.actions.findCharacterFail(payload);

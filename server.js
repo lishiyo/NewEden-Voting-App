@@ -228,6 +228,19 @@ app.put('/api/characters', function(req, res, next) {
   });
 });
 
+/**
+ * GET /api/characters/count
+ * Returns the total number of characters.
+ */
+app.get('/api/characters/count', function(req, res, next) {
+  Character.count({}, function(err, count) {
+    if (err) return next(err);
+    
+    res.send( { count: count });
+  })
+});
+
+
 // Server routes with React-router
 // This middleware function will be executed on every req to the server
 // On the server a rendered HTML markup is sent to index.html where it is inserted into <div id="app">{{ html|safe }}</div>

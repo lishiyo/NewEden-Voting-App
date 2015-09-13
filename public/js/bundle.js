@@ -227,8 +227,9 @@ var NavbarActions = (function () {
                 url: '/api/characters/search',
                 data: { name: payload.searchQuery }
             }).done(function (data) {
+                // { count, count }
                 (0, _underscore.assign)(payload, data);
-                _this2.actions.findCharacterSuccess(payload);
+                _this2.actions.findCharacterSuccess(data.count);
             }).fail(function () {
                 _this2.actions.findCharacterFail(payload);
             });

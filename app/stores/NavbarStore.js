@@ -30,7 +30,7 @@ class NavbarStore {
         this.ajaxAnimationClass = className; //fadeIn or fadeOut
     }
 
-    onGetCharacterCountSuccess(data) {
+    onGetCharacterCountSuccess(data) { 
         this.totalCharacters = data.count;
     }
     
