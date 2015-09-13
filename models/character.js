@@ -18,4 +18,12 @@ let characterSchema = new mongoose.Schema({
   voted: { type: Boolean, default: false }
 });
 
+// === Instance Methods ===
+
+characterSchema.methods.winningPercentage = function (cb) {
+  let total = (this.wins + this.losses).toFixed(2);
+  console.log("total vs wins", total, this.wins);
+  return (this.wins / total);
+}
+
 export default mongoose.model('Character', characterSchema);

@@ -20,11 +20,9 @@ class AddCharacterActions {
             data: { name: name, gender: gender }
         })
         .done((data) => {
-            console.log("addCharacter success", data);
             this.actions.addCharacterSuccess(data.message);
         })
         .fail((jqXhr) => {
-            console.log("addCharacter fail", jqXhr);
             this.actions.addCharacterFail(jqXhr.responseJSON.message);
         });
     }

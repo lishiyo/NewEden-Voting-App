@@ -35,10 +35,8 @@ var AddCharacterActions = (function () {
                 url: '/api/characters',
                 data: { name: name, gender: gender }
             }).done(function (data) {
-                console.log("addCharacter success", data);
                 _this.actions.addCharacterSuccess(data.message);
             }).fail(function (jqXhr) {
-                console.log("addCharacter fail", jqXhr);
                 _this.actions.addCharacterFail(jqXhr.responseJSON.message);
             });
         }
@@ -134,7 +132,6 @@ var HomeActions = (function () {
       var _this = this;
 
       $.ajax({ url: '/api/characters' }).done(function (data) {
-        console.log("got characters", data);
         _this.actions.getTwoCharactersSuccess(data);
       }).fail(function (jqXhr) {
         _this.actions.getTwoCharactersFail(jqXhr.responseJSON.message);
@@ -198,7 +195,7 @@ var NavbarActions = (function () {
         // Update search query value on keypress.
         'updateSearchQuery',
         // ajax callbacks
-        'getCharacterCountSuccess', 'getCharacterCountFail', 'findCharacterSuccess', ' findCharacterFail');
+        'getCharacterCountSuccess', 'getCharacterCountFail', 'findCharacterSuccess', 'findCharacterFail');
     }
 
     // Fetch total number of characters from the server.
@@ -211,7 +208,7 @@ var NavbarActions = (function () {
             $.ajax({
                 url: '/api/characters/count'
             }).done(function (data) {
-                _this.actions.getCharacterCountSuccess(data);
+                _this.actions.getCharacterCountSuccess(data.count);
             }).fail(function (jqXhr) {
                 _this.actions.getCharacterCountFail(jqXhr);
             });
@@ -227,9 +224,10 @@ var NavbarActions = (function () {
                 url: '/api/characters/search',
                 data: { name: payload.searchQuery }
             }).done(function (data) {
-                // { count, count }
+                // character
                 (0, _underscore.assign)(payload, data);
-                _this2.actions.findCharacterSuccess(data.count);
+                console.log("findCharacter success", payload);
+                _this2.actions.findCharacterSuccess(payload);
             }).fail(function () {
                 _this2.actions.findCharacterFail(payload);
             });
@@ -1863,9 +1861,15 @@ var NavbarStore = (function () {
     }
 
     _createClass(NavbarStore, [{
+        key: 'onUpdateSearchQuery',
+        value: function onUpdateSearchQuery(event) {
+            this.searchQuery = event.target.value;
+        }
+    }, {
         key: 'onFindCharacterSuccess',
         value: function onFindCharacterSuccess(payload) {
-            var url = '/characters/' + payload.characterId;
+            console.log("found character", payload.character);
+            var url = '/characters/' + payload.character.characterId;
             payload.router.transitionTo(url);
         }
     }, {
@@ -1888,8 +1892,8 @@ var NavbarStore = (function () {
         }
     }, {
         key: 'onGetCharacterCountSuccess',
-        value: function onGetCharacterCountSuccess(data) {
-            this.totalCharacters = data.count;
+        value: function onGetCharacterCountSuccess(count) {
+            this.totalCharacters = count;
         }
     }, {
         key: 'onGetCharacterCountFail',

@@ -235,9 +235,80 @@ app.put('/api/characters', function(req, res, next) {
 app.get('/api/characters/count', function(req, res, next) {
   Character.count({}, function(err, count) {
     if (err) return next(err);
-    
+
     res.send( { count: count });
   })
+});
+
+/**
+ * GET /api/characters/search
+ * Looks up a character by name. (case-insensitive)
+ */
+app.get('/api/characters/search', function(req, res, next){
+  let name = new RegExp(req.query.name, 'i');
+
+  Character.findOne({ name: name }, function(err, character) {
+    if (err) return next(err);
+    if (!character) {
+      return res.status(404).send( { message: "Couldn't find character."});
+    }
+
+    res.send({ character: character });
+  });
+});
+
+/**
+ * GET /api/characters/:id
+ * Returns detailed character information.
+ */
+app.get('/api/characters/:id', function(req, res, next) {
+ var id = req.params.id;
+
+ Character.findOne({ characterId: id }, function(err, character) {
+   if (err) return next(err);
+
+   if (!character) {
+     return res.status(404).send({ message: 'Character not found.' });
+   }
+
+   res.send(character);
+ });
+});
+
+/**
+ * GET /api/characters/top
+ * Return 100 highest ranked characters. Filter by gender, race and bloodline.
+ */
+app.get('/api/characters/top', function(req, res, next) {
+  console.log("top", req.query);
+  // GET /api/characters/top?race=caldari&bloodline=civire&gender=male
+  let params = req.query; // { race: caldari, bloodline: civire }
+  let conditions = {}; // /caldari$/i, // /civire$/i, // /male$/i
+  // { race: /caldari$/i, bloodline: /civire$/i, gender: /male$/i }
+  _.each(params, function(value, key) { // value, key, list
+    let valueRegex = '^' + value + '$';
+    conditions[key] = new RegExp(valueRegex, 'i');
+  });
+
+  Character
+  .find(conditions)
+  .sort('-wins') // descending wins order
+  .limit(100)
+  .exec(function(err, characters) {
+    if (err) return next(err);
+    characters.sort(function(a, b) {
+      let aPct = a.winningPercentage();
+      let bPct = b.winningPercentage();
+      console.log("a vs b", a, b);
+      if (aPct > bPct) {
+        return -1;
+      } else if (aPct < bPct) {
+        return 1;
+      } else return 0;
+    });
+
+    res.send(characters);
+  });
 });
 
 

@@ -10,8 +10,13 @@ class NavbarStore {
         this.ajaxAnimationClass = '';
     }
 
+    onUpdateSearchQuery(event) {
+        this.searchQuery = event.target.value;
+    }
+
     onFindCharacterSuccess(payload) {
-        let url = '/characters/' + payload.characterId;
+        console.log("found character", payload.character);
+        let url = '/characters/' + payload.character.characterId;
         payload.router.transitionTo(url);
     }
 
@@ -30,8 +35,8 @@ class NavbarStore {
         this.ajaxAnimationClass = className; //fadeIn or fadeOut
     }
 
-    onGetCharacterCountSuccess(data) { 
-        this.totalCharacters = data.count;
+    onGetCharacterCountSuccess(count) { 
+        this.totalCharacters = count;
     }
     
     onGetCharacterCountFail(jqXhr) {

@@ -14,7 +14,7 @@ class NavbarActions {
             'getCharacterCountSuccess',
             'getCharacterCountFail',
             'findCharacterSuccess',
-          ' findCharacterFail'
+            'findCharacterFail'
         );
     }
 
@@ -24,7 +24,7 @@ class NavbarActions {
             url: '/api/characters/count'
         })
         .done((data) => {
-            this.actions.getCharacterCountSuccess(data);
+            this.actions.getCharacterCountSuccess(data.count);
         })
         .fail((jqXhr) => {
             this.actions.getCharacterCountFail(jqXhr);
@@ -37,9 +37,10 @@ class NavbarActions {
             url: '/api/characters/search',
             data: { name: payload.searchQuery }
         })
-        .done((data) => { // { count, count }
+        .done((data) => { // character 
             assign(payload, data);
-            this.actions.findCharacterSuccess(data.count);
+            console.log("findCharacter success", payload)
+            this.actions.findCharacterSuccess(payload);
         })
         .fail(() => {
             this.actions.findCharacterFail(payload);
