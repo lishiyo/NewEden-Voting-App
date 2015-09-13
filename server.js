@@ -257,23 +257,6 @@ app.get('/api/characters/search', function(req, res, next){
   });
 });
 
-/**
- * GET /api/characters/:id
- * Returns detailed character information.
- */
-app.get('/api/characters/:id', function(req, res, next) {
- var id = req.params.id;
-
- Character.findOne({ characterId: id }, function(err, character) {
-   if (err) return next(err);
-
-   if (!character) {
-     return res.status(404).send({ message: 'Character not found.' });
-   }
-
-   res.send(character);
- });
-});
 
 /**
  * GET /api/characters/top
@@ -296,10 +279,10 @@ app.get('/api/characters/top', function(req, res, next) {
   .limit(100)
   .exec(function(err, characters) {
     if (err) return next(err);
+    
     characters.sort(function(a, b) {
       let aPct = a.winningPercentage();
       let bPct = b.winningPercentage();
-      console.log("a vs b", a, b);
       if (aPct > bPct) {
         return -1;
       } else if (aPct < bPct) {
@@ -311,6 +294,23 @@ app.get('/api/characters/top', function(req, res, next) {
   });
 });
 
+/**
+ * GET /api/characters/:id
+ * Returns detailed character information.
+ */
+app.get('/api/characters/:id', function(req, res, next) {
+ var id = req.params.id;
+
+ Character.findOne({ characterId: id }, function(err, character) {
+   if (err) return next(err);
+
+   if (!character) {
+     return res.status(404).send({ message: 'Character not found.' });
+   }
+
+   res.send(character);
+ });
+});
 
 // Server routes with React-router
 // This middleware function will be executed on every req to the server
