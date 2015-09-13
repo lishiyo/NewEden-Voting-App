@@ -120,28 +120,116 @@ app.post('/api/characters', function(req, res, next) {
  * Returns 2 random characters of the same gender that have not been voted yet.
  */
 app.get('/api/characters', function(req, res, next) {
-    let gender = _.sample(['Male', 'Female']); // random gender
-    let randomPoint = [ Math.random(), 0 ];
+    let genders = ['Male', 'Female'];
+    let randomGender = _.sample(genders); // random gender
 
     Character
         .find({
-            random: { $near: randomPoint },
-            gender: gender,
+            random: { $near: [ Math.random(), 0 ] },
+            gender: randomGender,
             voted: false
         })
-        // .where('voted', false)
-        // .where('gender', gender)
         .limit(2)
         .exec(function (err, characters) {
             if (err) return next(err);
 
-            res.send(characters);
-        })
+            // if we got two, we're done
+            if (characters.length === 2) {
+              return res.send(characters);
+            }
 
+            // otherwise, try the opposite gender
+            let oppositeGender = _.first(_.without(genders, randomGender));
+
+            Character
+              .find({ random: { $near: [ Math.random(), 0 ] }})
+              .where('voted', false)
+              .where('gender', oppositeGender)
+              .exec(function (err, characters) {
+                if (err) return next(err);
+
+                if (characters.length === 2) {
+                  return res.send(characters);
+                }
+
+                // reset all characters to have not been voted before, with multiple allowed
+                Character.update({}, { $set: { voted: false } }, { multi: true }, function(err) {
+                  if (err) return next(err);
+                  res.send([]);
+                });
+              });
+        });
+});
+
+/**
+ * PUT /api/characters
+ * Update winning and losing count for both characters.
+ */
+app.put('/api/characters', function(req, res, next) {
+  let winnerId = req.body.winnerId;
+  let loserId = req.body.loserId;
+
+  if (!winnerId || !loserId) {
+    return res.status(400).send({ message: 'Voting requires two characters.' });
+  }
+
+  if (winnerId === loserId) {
+    return res.status(400).send({ message: 'Cannot vote for and against the same character.' });
+  }
+
+  async.parallel({
+    findWinner: function(callback) {
+      Character.findOne( { characterId: winnerId }, function(err, winner) {
+        callback(err, winner);
+      });
+    },
+    findLoser: function(callback) {
+      Character.findOne( { characterId: loserId }, function(err, loser) {
+        callback(err, loser);
+      });
+    },
+  },
+  function(err, results) {
+      // results is now: {findWinner: winner, findLoser: loser}
+      if (err) return next(err);
+      let winner = results.findWinner;
+      let loser = results.findLoser;
+
+      if (!winner || !loser) {
+        return res.status(404).send( { message: 'A character no longer exists.'});
+      }
+
+      if (winner.voted || loser.voted) {
+        return res.status(200).end();
+      }
+
+      async.parallel([
+        function(callback) {
+          winner.wins++;
+          winner.voted = true;
+          winner.random = [Math.random(), 0];
+          winner.save(function(err, winner) {
+            callback(err);
+          });
+        },
+        function(callback) {
+          loser.losses++;
+          loser.voted = true;
+          loser.random = [Math.random(), 0];
+          loser.save(function(err, loser) {
+            callback(err);
+          });
+        }
+      ], function(err) {
+        if (err) return next(err);
+
+        res.status(200).end();
+      });
+  });
 });
 
 // Server routes with React-router
-// This middleware fn will be executed on every req to the server
+// This middleware function will be executed on every req to the server
 // On the server a rendered HTML markup is sent to index.html where it is inserted into <div id="app">{{ html|safe }}</div>
 app.use(function(req, res) {
   Router.run(routes, req.path, function(Handler) {

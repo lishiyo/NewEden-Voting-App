@@ -142,13 +142,13 @@ var HomeActions = (function () {
     }
   }, {
     key: 'vote',
-    value: function vote(winner, loser) {
+    value: function vote(winnerId, loserId) {
       var _this2 = this;
 
       $.ajax({
         type: 'PUT',
         url: '/api/characters',
-        data: { winner: winner, loser: loser }
+        data: { winnerId: winnerId, loserId: loserId }
       }).done(function () {
         _this2.actions.getTwoCharacters();
       }).fail(function (jqXhr) {
@@ -699,14 +699,14 @@ var Home = (function (_React$Component) {
     }
   }, {
     key: 'handleClick',
-    value: function handleClick(character) {
-      var winnerId = character.characterId;
-      // take current characters, find where matches winner id, substract winner
-      var loser = (0, _underscore.first)((0, _underscore.without)(this.state.characters, (0, _underscore.findWhere)(this.state.characters, {
+    value: function handleClick(winner) {
+      var winnerId = winner.characterId;
+      // take current characters, find where matches winner id, subtract winner
+      var loserId = (0, _underscore.first)((0, _underscore.without)(this.state.characters, (0, _underscore.findWhere)(this.state.characters, {
         characterId: winnerId
       }))).characterId;
 
-      _actionsHomeActions2['default'].vote(winner, loser);
+      _actionsHomeActions2['default'].vote(winnerId, loserId);
     }
   }, {
     key: 'render',

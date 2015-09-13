@@ -20,11 +20,11 @@ class HomeActions {
       });
   }
 
-  vote(winner, loser) {
+  vote(winnerId, loserId) {
     $.ajax({
         type: 'PUT',
         url: '/api/characters' ,
-        data: { winner: winner, loser: loser }
+        data: { winnerId: winnerId, loserId: loserId }
       })
       .done(() => {
         this.actions.getTwoCharacters();

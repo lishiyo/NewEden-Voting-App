@@ -26,16 +26,16 @@ class Home extends React.Component {
     this.setState(state);
   }
 
-  handleClick(character) {
-    let winnerId = character.characterId;
-    // take current characters, find where matches winner id, substract winner
-    let loser = first(without(this.state.characters,
+  handleClick(winner) {
+    let winnerId = winner.characterId;
+    // take current characters, find where matches winner id, subtract winner
+    let loserId = first(without(this.state.characters,
       findWhere(this.state.characters, {
         characterId: winnerId
       })
     )).characterId;
 
-    HomeActions.vote(winner, loser);
+    HomeActions.vote(winnerId, loserId);
   }
 
   render() {
