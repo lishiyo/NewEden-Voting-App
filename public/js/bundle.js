@@ -48,7 +48,66 @@ var AddCharacterActions = (function () {
 exports['default'] = _alt2['default'].createActions(AddCharacterActions);
 module.exports = exports['default'];
 
-},{"../alt":5}],2:[function(require,module,exports){
+},{"../alt":6}],2:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+var CharacterActions = (function () {
+  function CharacterActions() {
+    _classCallCheck(this, CharacterActions);
+
+    this.generateActions('reportSuccess', 'reportFail', 'getCharacterSuccess', 'getCharacterFail');
+  }
+
+  _createClass(CharacterActions, [{
+    key: 'report',
+    value: function report(characterId) {
+      var _this = this;
+
+      $.ajax({
+        type: 'POST',
+        url: '/api/post',
+        data: { characterId: characterId }
+      }).done(function (data) {
+        _this.actions.reportSuccess();
+      }).fail(function (jqXhr) {
+        _this.actions.reportFail(jqXhr);
+      });
+    }
+  }, {
+    key: 'getCharacter',
+    value: function getCharacter(characterId) {
+      var _this2 = this;
+
+      var url = '/api/characters/' + characterId;
+      $.ajax({ url: url }).done(function (data) {
+        _this2.actions.getCharacterSuccess(data);
+      }).fail(function (jqXhr) {
+        _this2.actions.getCharacterFail(data);
+      });
+    }
+  }]);
+
+  return CharacterActions;
+})();
+
+exports['default'] = _alt2['default'].createActions(CharacterActions);
+module.exports = exports['default'];
+
+},{"../alt":6}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -102,7 +161,7 @@ var FooterActions = (function () {
 exports['default'] = _alt2['default'].createActions(FooterActions);
 module.exports = exports['default'];
 
-},{"../alt":5}],3:[function(require,module,exports){
+},{"../alt":6}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -160,7 +219,7 @@ var HomeActions = (function () {
 exports['default'] = _alt2['default'].createActions(HomeActions);
 module.exports = exports['default'];
 
-},{"../alt":5}],4:[function(require,module,exports){
+},{"../alt":6}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -240,7 +299,7 @@ var NavbarActions = (function () {
 exports['default'] = _alt2['default'].createActions(NavbarActions);
 module.exports = exports['default'];
 
-},{"../alt":5,"underscore":"underscore"}],5:[function(require,module,exports){
+},{"../alt":6,"underscore":"underscore"}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -257,7 +316,7 @@ var _alt2 = _interopRequireDefault(_alt);
 exports['default'] = new _alt2['default']();
 module.exports = exports['default'];
 
-},{"alt":"alt"}],6:[function(require,module,exports){
+},{"alt":"alt"}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -433,7 +492,7 @@ var AddCharacter = (function (_React$Component) {
 exports['default'] = AddCharacter;
 module.exports = exports['default'];
 
-},{"../actions/AddCharacterActions":1,"../stores/AddCharacterStore":13,"react":"react"}],7:[function(require,module,exports){
+},{"../actions/AddCharacterActions":1,"../stores/AddCharacterStore":15,"react":"react"}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -492,7 +551,217 @@ var App = (function (_React$Component) {
 exports['default'] = App;
 module.exports = exports['default'];
 
-},{"./Footer":8,"./Navbar":10,"react":"react","react-router":"react-router"}],8:[function(require,module,exports){
+},{"./Footer":10,"./Navbar":12,"react":"react","react-router":"react-router"}],9:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _storesCharacterStore = require('../stores/CharacterStore');
+
+var _storesCharacterStore2 = _interopRequireDefault(_storesCharacterStore);
+
+var _actionsCharacterActions = require('../actions/CharacterActions');
+
+var _actionsCharacterActions2 = _interopRequireDefault(_actionsCharacterActions);
+
+var Character = (function (_React$Component) {
+  _inherits(Character, _React$Component);
+
+  function Character(props) {
+    _classCallCheck(this, Character);
+
+    _get(Object.getPrototypeOf(Character.prototype), 'constructor', this).call(this, props);
+
+    this.state = _storesCharacterStore2['default'].getState();
+    this.onChange = this.onChange.bind(this);
+  }
+
+  _createClass(Character, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      _storesCharacterStore2['default'].listen(this.onChange);
+
+      _actionsCharacterActions2['default'].getCharacter(this.props.params.id);
+
+      $('.magnific-popup').magnificPopup({
+        type: 'image',
+        mainClass: 'mfp-zoom-in',
+        closeOnContentClick: true,
+        midClick: true,
+        zoom: {
+          enabled: true,
+          duration: 300
+        }
+      });
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      _storesCharacterStore2['default'].unlisten(this.onChange);
+
+      // remove full-page bg image when navigating back
+      $(document.body).removeClass();
+    }
+
+    // not called for the initial render, only when updated
+    // transitioning from char to char means component is never unmounted
+    // this is called if we are in this component and URL changes
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps, prevState) {
+      // Fetch new character data when URL path changes
+      if (this.props.params.id !== prevProps.params.id) {
+        _actionsCharacterActions2['default'].getCharacter(this.props.params.id);
+      }
+
+      if (this.state.race !== prevState.race) {
+        $(document.body).attr('class', 'profile ' + this.state.race.toLowerCase());
+      }
+    }
+  }, {
+    key: 'onChange',
+    value: function onChange(state) {
+      this.setState(state);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2['default'].createElement(
+        'div',
+        { className: 'container' },
+        _react2['default'].createElement(
+          'div',
+          { className: 'profile-img' },
+          _react2['default'].createElement(
+            'a',
+            { className: 'magnific-popup', href: 'https://image.eveonline.com/Character/' + this.state.characterId + '_1024.jpg' },
+            _react2['default'].createElement('img', { src: 'https://image.eveonline.com/Character/' + this.state.characterId + '_256.jpg' })
+          )
+        ),
+        _react2['default'].createElement(
+          'div',
+          { className: 'profile-info clearfix' },
+          _react2['default'].createElement(
+            'h2',
+            null,
+            _react2['default'].createElement(
+              'strong',
+              null,
+              this.state.name
+            )
+          ),
+          _react2['default'].createElement(
+            'h4',
+            { className: 'lead' },
+            'Race: ',
+            _react2['default'].createElement(
+              'strong',
+              null,
+              this.state.race
+            )
+          ),
+          _react2['default'].createElement(
+            'h4',
+            { className: 'lead' },
+            'Bloodline: ',
+            _react2['default'].createElement(
+              'strong',
+              null,
+              this.state.bloodline
+            )
+          ),
+          _react2['default'].createElement(
+            'h4',
+            { className: 'lead' },
+            'Gender: ',
+            _react2['default'].createElement(
+              'strong',
+              null,
+              this.state.gender
+            )
+          ),
+          _react2['default'].createElement(
+            'button',
+            { className: 'btn btn-transparent',
+              onClick: _actionsCharacterActions2['default'].report.bind(this, this.state.characterId),
+              disabled: this.state.isReported },
+            this.state.isReported ? 'Reported' : 'Report Character'
+          )
+        ),
+        _react2['default'].createElement(
+          'div',
+          { className: 'profile-stats clearfix' },
+          _react2['default'].createElement(
+            'ul',
+            null,
+            _react2['default'].createElement(
+              'li',
+              null,
+              _react2['default'].createElement(
+                'span',
+                { className: 'stats-number' },
+                this.state.winLossRatio
+              ),
+              'Winning Percentage'
+            ),
+            _react2['default'].createElement(
+              'li',
+              null,
+              _react2['default'].createElement(
+                'span',
+                { className: 'stats-number' },
+                this.state.wins
+              ),
+              ' Wins'
+            ),
+            _react2['default'].createElement(
+              'li',
+              null,
+              _react2['default'].createElement(
+                'span',
+                { className: 'stats-number' },
+                this.state.losses
+              ),
+              ' Losses'
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return Character;
+})(_react2['default'].Component);
+
+Character.contextTypes = {
+  router: _react2['default'].PropTypes.func.isRequired
+};
+
+Character.propTypes = {
+  // from react router `characters/:id`
+  params: _react2['default'].PropTypes.object.isRequired
+};
+
+exports['default'] = Character;
+module.exports = exports['default'];
+
+},{"../actions/CharacterActions":2,"../stores/CharacterStore":16,"react":"react"}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -635,7 +904,7 @@ exports['default'] = Footer;
 module.exports = exports['default'];
 /* Link auto applies 'active' CSS class */
 
-},{"../actions/FooterActions":2,"../stores/FooterStore":14,"react":"react","react-router":"react-router"}],9:[function(require,module,exports){
+},{"../actions/FooterActions":3,"../stores/FooterStore":17,"react":"react","react-router":"react-router"}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -790,7 +1059,7 @@ var Home = (function (_React$Component) {
 exports['default'] = Home;
 module.exports = exports['default'];
 
-},{"../actions/HomeActions":3,"../stores/HomeStore":15,"react":"react","react-router":"react-router","underscore":"underscore"}],10:[function(require,module,exports){
+},{"../actions/HomeActions":4,"../stores/HomeStore":18,"react":"react","react-router":"react-router","underscore":"underscore"}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -853,6 +1122,7 @@ var Navbar = (function (_React$Component) {
     key: 'connectSocket',
     value: function connectSocket() {
       var socket = io.connect();
+
       socket.on('onlineUsers', function (data) {
         _actionsNavbarActions2['default'].updateOnlineUsers(data);
       });
@@ -1567,7 +1837,7 @@ Navbar.contextTypes = {
 exports['default'] = Navbar;
 module.exports = exports['default'];
 
-},{"../actions/NavbarActions":4,"../stores/NavbarStore":16,"react":"react","react-router":"react-router"}],11:[function(require,module,exports){
+},{"../actions/NavbarActions":5,"../stores/NavbarStore":19,"react":"react","react-router":"react-router"}],13:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1591,7 +1861,7 @@ _reactRouter2['default'].run(_routes2['default'], _reactRouter2['default'].Histo
     _react2['default'].render(_react2['default'].createElement(Handler, null), document.getElementById('app'));
 });
 
-},{"./routes":12,"react":"react","react-router":"react-router"}],12:[function(require,module,exports){
+},{"./routes":14,"react":"react","react-router":"react-router"}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1618,15 +1888,20 @@ var _componentsAddCharacter = require('./components/AddCharacter');
 
 var _componentsAddCharacter2 = _interopRequireDefault(_componentsAddCharacter);
 
+var _componentsCharacter = require('./components/Character');
+
+var _componentsCharacter2 = _interopRequireDefault(_componentsCharacter);
+
 exports['default'] = _react2['default'].createElement(
     _reactRouter.Route,
     { handler: _componentsApp2['default'] },
     _react2['default'].createElement(_reactRouter.DefaultRoute, { name: 'home', handler: _componentsHome2['default'] }),
-    _react2['default'].createElement(_reactRouter.Route, { name: 'add', path: 'add', handler: _componentsAddCharacter2['default'] })
+    _react2['default'].createElement(_reactRouter.Route, { name: 'add', path: 'add', handler: _componentsAddCharacter2['default'] }),
+    _react2['default'].createElement(_reactRouter.Route, { name: 'characterDetail', path: '/characters/:id', handler: _componentsCharacter2['default'] })
 );
 module.exports = exports['default'];
 
-},{"./components/AddCharacter":6,"./components/App":7,"./components/Home":9,"react":"react","react-router":"react-router"}],13:[function(require,module,exports){
+},{"./components/AddCharacter":7,"./components/App":8,"./components/Character":9,"./components/Home":11,"react":"react","react-router":"react-router"}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1721,7 +1996,100 @@ var AddCharacterStore = (function () {
 exports['default'] = _alt2['default'].createStore(AddCharacterStore);
 module.exports = exports['default'];
 
-},{"../actions/AddCharacterActions":1,"../alt":5}],14:[function(require,module,exports){
+},{"../actions/AddCharacterActions":1,"../alt":6}],16:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var _underscore = require('underscore');
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+var _actionsCharacterActions = require('../actions/CharacterActions');
+
+var _actionsCharacterActions2 = _interopRequireDefault(_actionsCharacterActions);
+
+var CharacterStore = (function () {
+    function CharacterStore() {
+        _classCallCheck(this, CharacterStore);
+
+        this.bindActions(_actionsCharacterActions2['default']);
+
+        this.characterId = '';
+        this.isReported = false;
+        this.name = 'TBD';
+        this.race = 'TBD';
+        this.bloodline = 'TBD';
+        this.gender = 'TBD';
+        this.winLossRatio = 0;
+        this.wins = 0;
+        this.losses = 0;
+    }
+
+    _createClass(CharacterStore, [{
+        key: 'onGetCharacterSuccess',
+        value: function onGetCharacterSuccess(data) {
+            (0, _underscore.assign)(this, data); // merge in character properties
+
+            // block user from reporting a character twice
+            var reports = this._getLocalReports();
+            this.isReported = (0, _underscore.contains)(reports, this.characterId);
+            // If is NaN (from division by zero) then set it to "0"
+            this.winLossRatio = (this.wins / (this.wins + this.losses) * 100 || 0).toFixed(1);
+
+            $(document.body).attr('class', 'profile ' + this.race.toLowerCase());
+        }
+    }, {
+        key: 'onGetCharacterFail',
+        value: function onGetCharacterFail(jqXhr) {
+            toastr.error(jqXhr.responseJSON.message);
+        }
+    }, {
+        key: 'onReportSuccess',
+        value: function onReportSuccess() {
+            this.isReported = true;
+            var reports = this._getLocalReports();
+            reports.push(this.characterId);
+            this._setLocalReports({ reports: reports });
+
+            toastr.warning('Character has been reported.');
+        }
+    }, {
+        key: 'onReportFail',
+        value: function onReportFail(jqXhr) {
+            toastr.error(jqXhr.responseJSON.message);
+        }
+    }, {
+        key: '_getLocalReports',
+        value: function _getLocalReports() {
+            var localData = localStorage.getItem('NEF') ? JSON.parse(localStorage.getItem('NEF')) : {};
+            localData.reports = localData.reports || [];
+            return localData.reports;
+        }
+    }, {
+        key: '_setLocalReports',
+        value: function _setLocalReports(data) {
+            localStorage.setItem('NEF', JSON.stringify(data));
+        }
+    }]);
+
+    return CharacterStore;
+})();
+
+exports['default'] = _alt2['default'].createStore(CharacterStore);
+module.exports = exports['default'];
+
+},{"../actions/CharacterActions":2,"../alt":6,"underscore":"underscore"}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1775,7 +2143,7 @@ var FooterStore = (function () {
 exports['default'] = _alt2['default'].createStore(FooterStore);
 module.exports = exports['default'];
 
-},{"../actions/FooterActions":2,"../alt":5}],15:[function(require,module,exports){
+},{"../actions/FooterActions":3,"../alt":6}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1828,7 +2196,7 @@ var HomeStore = (function () {
 exports['default'] = _alt2['default'].createStore(HomeStore);
 module.exports = exports['default'];
 
-},{"../actions/HomeActions":3,"../alt":5}],16:[function(require,module,exports){
+},{"../actions/HomeActions":4,"../alt":6}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1908,4 +2276,4 @@ var NavbarStore = (function () {
 exports['default'] = _alt2['default'].createStore(NavbarStore);
 module.exports = exports['default'];
 
-},{"../actions/NavbarActions":4,"../alt":5}]},{},[11]);
+},{"../actions/NavbarActions":5,"../alt":6}]},{},[13]);

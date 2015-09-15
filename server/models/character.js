@@ -18,7 +18,7 @@ let characterSchema = new mongoose.Schema({
   voted: { type: Boolean, default: false }
 });
 
-// === Instance Methods ===
+// ====== Instance Methods ======
 
 characterSchema.methods.winningPercentage = function (cb) {
   let total = (this.wins + this.losses).toFixed(2);
