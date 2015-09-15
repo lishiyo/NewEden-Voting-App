@@ -25,8 +25,6 @@ class CharacterStore {
         this.isReported = contains(reports, this.characterId);
         // If is NaN (from division by zero) then set it to "0"
         this.winLossRatio = ((this.wins / (this.wins + this.losses) * 100) || 0).toFixed(1);
-
-        $(document.body).attr('class', 'profile ' + this.race.toLowerCase());
     }
 
     onGetCharacterFail(jqXhr) {
