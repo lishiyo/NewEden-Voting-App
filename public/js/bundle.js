@@ -156,7 +156,6 @@ var CharacterListActions = (function () {
                 }
             }
 
-            console.log("paramsData, url: ", paramsData, url);
             $.ajax({
                 url: url,
                 data: paramsData
@@ -1778,7 +1777,7 @@ var Navbar = (function (_React$Component) {
                       null,
                       _react2['default'].createElement(
                         _reactRouter.Link,
-                        { to: '/female/caldari/civire/' },
+                        { to: '/female/caldari/civire' },
                         'Civire'
                       )
                     ),

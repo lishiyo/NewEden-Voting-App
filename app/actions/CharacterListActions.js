@@ -27,10 +27,9 @@ class CharacterListActions {
         }
     }
 
-    console.log("paramsData, url: ", paramsData, url);
-    $.ajax({ 
-        url: url , 
-        data: paramsData 
+    $.ajax({
+        url: url ,
+        data: paramsData
     }).done((data) => {
         this.actions.getCharactersSuccess(data);
     }).fail((jqXhr) => {

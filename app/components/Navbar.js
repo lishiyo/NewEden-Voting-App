@@ -25,7 +25,7 @@ class Navbar extends React.Component {
 
   connectSocket() {
     let socket = io.connect();
-    
+
     socket.on('onlineUsers', (data) => {
         NavbarActions.updateOnlineUsers(data);
     });
@@ -150,7 +150,7 @@ class Navbar extends React.Component {
                         <Link to='/female/caldari'>Caldari</Link>
                         <ul className='dropdown-menu'>
                           <li><Link to='/female/caldari/achura'>Achura</Link></li>
-                          <li><Link to='/female/caldari/civire/'>Civire</Link></li>
+                          <li><Link to='/female/caldari/civire'>Civire</Link></li>
                           <li><Link to='/female/caldari/deteis'>Deteis</Link></li>
                         </ul>
                       </li>
